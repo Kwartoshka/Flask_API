@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: aboba
+      POSTGRES_USER: abobus
+      POSTGRES_DB: flask_db
+
+    ports:
+    - 5431:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8079:8080
+
+  flask_app:
+    depends_on:
+      - db
+      - adminer
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
