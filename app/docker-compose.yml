@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: flask_db
 
     ports:
-    - 5431:5432
+    - 5432:5432
 
   adminer:
     image: adminer
@@ -29,3 +29,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5000:5000
+
+  flask_app_migrate:
+    depends_on:
+      - db
+      - adminer
+      - flask_app
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5000
+    command: flask db upgrade
+    restart: "no"
